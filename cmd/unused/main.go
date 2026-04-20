@@ -74,7 +74,6 @@ func main() {
 		}
 
 		out.Filters.MinUnused = dur
-		out.Filters.MinAge = dur
 
 		return nil
 	})
@@ -116,6 +115,13 @@ func main() {
 		cancel()
 		fmt.Fprintln(os.Stderr, "creating providers:", err)
 		os.Exit(1)
+	}
+
+	if fs := out.Filters; fs.MinUnused != 0 && fs.MinAge != 0 {
+		logger.Warn("Both -min-unused and -min-age used, respecting only -min-unused",
+			slog.Duration("min-unused", fs.MinUnused),
+			slog.Duration("min-age", fs.MinAge))
+		out.Filters.MinAge = 0
 	}
 
 	out.Providers = providers
