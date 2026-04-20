@@ -67,6 +67,17 @@ func main() {
 		return nil
 	})
 
+	flag.Func("min-unused", "Minimum unused age of the disk to be listed (ex: 365d or 36h). Sets min-age to the same value", func(s string) error {
+		dur, err := internal.ParseAge(s)
+		if err != nil {
+			return err
+		}
+
+		out.Filters.MinUnused = dur
+
+		return nil
+	})
+
 	flag.Func("add-column", "Display additional column with metadata", func(c string) error {
 		out.ExtraColumns = append(out.ExtraColumns, c)
 		return nil
@@ -104,6 +115,13 @@ func main() {
 		cancel()
 		fmt.Fprintln(os.Stderr, "creating providers:", err)
 		os.Exit(1)
+	}
+
+	if fs := out.Filters; fs.MinUnused != 0 && fs.MinAge != 0 {
+		logger.Warn("Both -min-unused and -min-age used, setting both to same value",
+			slog.Duration("min-unused", fs.MinUnused),
+			slog.Duration("min-age", fs.MinAge))
+		out.Filters.MinAge = fs.MinUnused
 	}
 
 	out.Providers = providers
