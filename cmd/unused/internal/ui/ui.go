@@ -31,6 +31,10 @@ type UI struct {
 }
 
 func (ui UI) Filter(d unused.Disk) bool {
+	if ui.Filters.MinUnused != 0 {
+		ui.Filters.MinAge = ui.Filters.MinUnused
+	}
+
 	minAge := ui.Filters.MinAge == 0 || time.Since(d.CreatedAt()) >= ui.Filters.MinAge
 	keyVal := ui.Filters.Key == "" || d.Meta().Matches(ui.Filters.Key, ui.Filters.Value)
 	minUnused := ui.Filters.MinUnused == 0 || time.Since(d.LastUsedAt()) >= ui.Filters.MinUnused

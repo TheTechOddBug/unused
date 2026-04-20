@@ -56,6 +56,9 @@ func TestUI_Filter(t *testing.T) {
 
 		"unused":  {0, 1 * time.Hour, "", "", unused.Disks{foo, baz}},
 		"!unused": {0, 6 * time.Hour, "", "", nil},
+
+		// Special case when both MinAge and MinUnused are set
+		"both unused and minage": {3 * time.Hour, 1 * time.Hour, "", "", unused.Disks{foo, baz}},
 	}
 
 	for n, tt := range tests {

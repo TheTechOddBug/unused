@@ -118,10 +118,10 @@ func main() {
 	}
 
 	if fs := out.Filters; fs.MinUnused != 0 && fs.MinAge != 0 {
-		logger.Warn("Both -min-unused and -min-age used, respecting only -min-unused",
+		logger.Warn("Both -min-unused and -min-age used, setting both to same value",
 			slog.Duration("min-unused", fs.MinUnused),
 			slog.Duration("min-age", fs.MinAge))
-		out.Filters.MinAge = 0
+		out.Filters.MinAge = fs.MinUnused
 	}
 
 	out.Providers = providers
