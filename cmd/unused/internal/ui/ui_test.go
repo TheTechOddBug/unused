@@ -17,7 +17,7 @@ func TestUI_Filter(t *testing.T) {
 
 		foo = unusedtest.NewDisk("foo", csp1, now.Add(-5*time.Hour), now.Add(-3*time.Hour))
 		bar = unusedtest.NewDisk("bar", csp2, now.Add(-5*time.Hour), now.Add(-10*time.Second))
-		baz = unusedtest.NewDisk("baz", csp1, now.Add(-2*time.Hour), now.Add(-1*time.Hour-30&time.Minute))
+		baz = unusedtest.NewDisk("baz", csp1, now.Add(-2*time.Hour), now.Add(-1*time.Hour-30*time.Minute))
 	)
 
 	foo.SetMeta(unused.Meta{"lorem": "ipsum"})
